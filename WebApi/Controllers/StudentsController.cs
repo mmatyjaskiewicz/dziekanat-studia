@@ -29,4 +29,12 @@ public class StudentsController(IStudentService service) : ControllerBase
         var result = await service.AddStudent(dto);
         return CreatedAtAction(nameof(GetStudent), new { id = result.Id }, result);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, StudentUpdateDto dto)
+    {
+        var updated = await service.UpdateStudent(id, dto);
+        if (updated is null) return NotFound();
+        return Ok(updated);
+    }
 }

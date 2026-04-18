@@ -1,6 +1,8 @@
+using Core.Module;
 using Core.Repositories;
 using Core.Services;
 using Core.UnitOfWork;
+using FluentValidation.AspNetCore;
 using Infrastructre.Memory;
 
 namespace WebApi;
@@ -13,9 +15,12 @@ public class Program
 
         builder.Services.AddAuthorization();
         builder.Services.AddControllers();
-
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+        // Rejestracja automatycznej walidacji (ASP.NET Core filter).
+        builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddOpenApi();
+
+        // Moduł Students - rejestracja walidatorów.
+        builder.Services.AddStudentsModule(builder.Configuration);
 
         // Rejestracja repozytoriów w pamięci (singleton - dane przechowywane są w pamięci).
         builder.Services.AddSingleton<IStudentRepository, InMemoryStudentRepository>();

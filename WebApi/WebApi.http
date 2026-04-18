@@ -1,6 +1,36 @@
 @WebApi_HostAddress = http://localhost:5052
 
-GET {{WebApi_HostAddress}}/weatherforecast/
+GET {{WebApi_HostAddress}}/api/students
 Accept: application/json
 
 ###
+GET {{WebApi_HostAddress}}/api/students/3d54091d-abc8-49ec-9590-93ad3ed5458f
+Accept: application/json
+
+###
+POST {{WebApi_HostAddress}}/api/students
+Content-Type: application/json
+
+{
+  "firstName": "Adam",
+  "lastName": "Nowak",
+  "nationalId": "00210111111",
+  "email": "adam@wsei.edu.pl",
+  "studentId": "S0100",
+  "yearOfStudy": 1,
+  "programCode": "INF",
+  "enrollmentYearFrom": 2024
+}
+
+###
+PUT {{WebApi_HostAddress}}/api/students/3d54091d-abc8-49ec-9590-93ad3ed5458f
+Content-Type: application/json
+
+{
+  "firstName": "Adam",
+  "lastName": "Nowak",
+  "email": "adam@wsei.edu.pl",
+  "yearOfStudy": 2,
+  "status": 1,
+  "programCode": "INF"
+}
