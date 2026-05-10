@@ -10,13 +10,15 @@ public class MemoryUniversityUnitOfWork(
     ILecturerRepository lecturers,
     IGradeRepository grades,
     ICourseRepository courses,
-    IDegreeProgramRepository degreePrograms) : IUniversityUnitOfWork
+    IDegreeProgramRepository degreePrograms,
+    IAcademicYearRepository academicYears) : IUniversityUnitOfWork
 {
     public IStudentRepository Students => students;
     public ILecturerRepository Lecturers => lecturers;
     public IGradeRepository Grades => grades;
     public ICourseRepository Courses => courses;
     public IDegreeProgramRepository DegreePrograms => degreePrograms;
+    public IAcademicYearRepository AcademicYears => academicYears;
 
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 

@@ -1,6 +1,7 @@
 using Core.Common;
 using Core.Dto;
 using Core.Entities;
+using Core.Exceptions;
 using Core.Services;
 using Core.UnitOfWork;
 
@@ -50,5 +51,80 @@ public class MemoryStudentService(IUniversityUnitOfWork unitOfWork) : IStudentSe
     {
         await unitOfWork.Students.ChangeStatusAsync(id, status);
         await unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task<GradeDto> AddGrade(Guid studentId, GradeCreateDto gradeDto)
+    {
+        var student = await unitOfWork.Students.FindByIdAsync(studentId)
+            ?? throw new StudentNotFoundException($"Student with id={studentId} not found!");
+
+        var course = await unitOfWork.Courses.FindByIdAsync(gradeDto.CourseId)
+            ?? throw new Exception($"Course with id={gradeDto.CourseId} not found!");
+
+        var lecturer = await unitOfWork.Lecturers.FindByIdAsync(gradeDto.LecturerId)
+            ?? throw new LecturerNotFoundException($"Lecturer with id={gradeDto.LecturerId} not found!");
+
+        var year = await unitOfWork.AcademicYears.FindByIdAsync(gradeDto.AcademicYearId)
+            ?? throw new Exception($"Academic year with id={gradeDto.AcademicYearId} not found!");
+
+        var grade = new Grade
+        {
+            StudentId = student.Id,
+            CourseId = course.Id,
+            LecturerId = lecturer.Id,
+            AcademicYearId = year.Id,
+            IssueDate = gradeDto.IssueDate,
+            Value = gradeDto.GradeValue
+        };
+
+        grade = await unitOfWork.Grades.AddAsync(grade);
+        await unitOfWork.SaveChangesAsync();
+        return new GradeDto
+        {
+            Id = grade.Id,
+            CourseId = grade.CourseId,
+            LecturerId = grade.LecturerId,
+            AcademicYearId = grade.AcademicYearId,
+            IssueDate = grade.IssueDate,
+            GradeValue = grade.Value
+        };
+    }
+
+    public async Task<IEnumerable<GradeDto>> GetGrades(Guid studentId)
+    {
+        var student = await unitOfWork.Students.FindByIdAsync(studentId)
+            ?? throw new StudentNotFoundException($"Student with id={studentId} not found!");
+
+        return student.Grades.Select(g => new GradeDto
+        {
+            Id = g.Id,
+            CourseId = g.CourseId,
+            LecturerId = g.LecturerId,
+            AcademicYearId = g.AcademicYearId,
+            IssueDate = g.IssueDate,
+            GradeValue = g.Value
+        }).ToList();
+    }
+
+    public async Task<GradeDto?> UpdateGrade(Guid studentId, Guid gradeId, GradeUpdateDto dto)
+    {
+        var student = await unitOfWork.Students.FindByIdAsync(studentId)
+            ?? throw new StudentNotFoundException($"Student with id={studentId} not found!");
+
+        var grade = student.Grades.FirstOrDefault(g => g.Id == gradeId);
+        if (grade is null) return null;
+
+        grade.IssueDate = dto.IssueDate;
+        grade.Value = dto.GradeValue;
+
+        return new GradeDto
+        {
+            Id = grade.Id,
+            CourseId = grade.CourseId,
+            LecturerId = grade.LecturerId,
+            AcademicYearId = grade.AcademicYearId,
+            IssueDate = grade.IssueDate,
+            GradeValue = grade.Value
+        };
     }
 }
