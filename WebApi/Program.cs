@@ -1,9 +1,7 @@
 using Core.Module;
-using Core.Repositories;
-using Core.Services;
-using Core.UnitOfWork;
 using FluentValidation.AspNetCore;
-using Infrastructre.Memory;
+using Infrastructre.Module;
+using WebApi.Middleware;
 
 namespace WebApi;
 
@@ -19,21 +17,15 @@ public class Program
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddOpenApi();
 
+        // Rejestracja globalnego handlera wyjątków.
+        builder.Services.AddExceptionHandler<ProblemDetailsExceptionHandler>();
+        builder.Services.AddProblemDetails();
+
         // Moduł Students - rejestracja walidatorów.
         builder.Services.AddStudentsModule(builder.Configuration);
 
-        // Rejestracja repozytoriów w pamięci (singleton - dane przechowywane są w pamięci).
-        builder.Services.AddSingleton<IStudentRepository, InMemoryStudentRepository>();
-        builder.Services.AddSingleton<ILecturerRepository, InMemoryLecturerRepository>();
-        builder.Services.AddSingleton<IGradeRepository, InMemoryGradeRepository>();
-        builder.Services.AddSingleton<ICourseRepository, InMemoryCourseRepository>();
-        builder.Services.AddSingleton<IDegreeProgramRepository, InMemoryDegreeProgramRepository>();
-
-        // Rejestracja jednostki pracy.
-        builder.Services.AddSingleton<IUniversityUnitOfWork, MemoryUniversityUnitOfWork>();
-
-        // Rejestracja serwisu studentów.
-        builder.Services.AddSingleton<IStudentService, MemoryStudentService>();
+        // Rejestracja warstwy infrastruktury (EF) - serwisy, repozytoria, kontekst, jednostka pracy.
+        builder.Services.AddUniversityEfModule(builder.Configuration);
 
         var app = builder.Build();
 
@@ -42,6 +34,8 @@ public class Program
             app.MapOpenApi();
         }
 
+        // Globalna obsługa wyjątków - musi być przed mapowaniem kontrolerów.
+        app.UseExceptionHandler();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();

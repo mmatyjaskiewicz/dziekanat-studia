@@ -2,13 +2,14 @@ using Core.Common;
 using Core.Dto;
 using Core.Entities;
 using Core.Exceptions;
-using Core.Services;
+using Core.Repositories;
 using Core.UnitOfWork;
 
-namespace Infrastructre.Memory;
+namespace Core.Services;
 
-// Implementacja serwisu Student korzystająca z jednostki pracy w pamięci.
-public class MemoryStudentService(IUniversityUnitOfWork unitOfWork) : IStudentService
+// Implementacja serwisu Student - zależna tylko od IUniversityUnitOfWork (nie od konkretnej implementacji).
+// Może być używana zarówno z implementacjami Memory jak i Entity Framework.
+public class StudentService(IUniversityUnitOfWork unitOfWork) : IStudentService
 {
     public async Task<PagedResult<StudentSummaryDto>> FindAllStudentsPaged(int page, int size)
     {
