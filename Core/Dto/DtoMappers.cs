@@ -1,12 +1,7 @@
-using Core.Entities;
-
+﻿using Core.Entities;
 namespace Core.Dto;
-
-// Statyczne metody mapujące encje na DTO i DTO na encje.
-// Realizują mapowanie w czystej postaci - bez zewnętrznych bibliotek.
 public static class DtoMappers
 {
-    // Student -> StudentSummaryDto
     public static StudentSummaryDto ToSummary(this Student student)
     {
         return new StudentSummaryDto
@@ -21,8 +16,6 @@ public static class DtoMappers
             Status = student.Status
         };
     }
-
-    // Student -> StudentDetailDto
     public static StudentDetailDto ToDetail(this Student student)
     {
         return new StudentDetailDto
@@ -42,8 +35,6 @@ public static class DtoMappers
             IsEligibleForDiploma = false
         };
     }
-
-    // StudentCreateDto -> Student
     public static Student ToEntity(this StudentCreateDto dto)
     {
         return new Student
@@ -57,8 +48,6 @@ public static class DtoMappers
             Status = StudentStatus.Active
         };
     }
-
-    // Lecturer -> LecturerSummaryDto
     public static LecturerSummaryDto ToSummary(this Lecturer lecturer)
     {
         return new LecturerSummaryDto
@@ -71,8 +60,6 @@ public static class DtoMappers
             DisplayName = $"{lecturer.Title} {lecturer.FirstName} {lecturer.LastName}".Trim()
         };
     }
-
-    // Lecturer -> LecturerDetailDto
     public static LecturerDetailDto ToDetail(this Lecturer lecturer)
     {
         return new LecturerDetailDto
@@ -85,8 +72,6 @@ public static class DtoMappers
             Faculty = lecturer.Faculty
         };
     }
-
-    // LecturerCreateDto -> Lecturer
     public static Lecturer ToEntity(this LecturerCreateDto dto)
     {
         return new Lecturer
@@ -100,3 +85,4 @@ public static class DtoMappers
         };
     }
 }
+

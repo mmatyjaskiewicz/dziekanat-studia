@@ -1,9 +1,6 @@
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Repositories;
-
 namespace Infrastructre.Memory;
-
-// Implementacja repozytorium AcademicYear w pamięci - z przykładowymi danymi.
 public class InMemoryAcademicYearRepository : MemoryGenericRepository<AcademicYear>, IAcademicYearRepository
 {
     public InMemoryAcademicYearRepository()
@@ -20,8 +17,8 @@ public class InMemoryAcademicYearRepository : MemoryGenericRepository<AcademicYe
             StartDate = new DateTime(2024, 10, 1),
             EndDate = new DateTime(2025, 9, 30)
         };
-
         AddAsync(year2526).Wait();
         AddAsync(year2425).Wait();
     }
 }
+

@@ -1,6 +1,4 @@
-namespace Core.Entities;
-
-// Typ wyliczeniowy ocen stosowany w systemie dziekanatu.
+﻿namespace Core.Entities;
 public enum GradeValue
 {
     Grade20 = 20,
@@ -10,3 +8,4 @@ public enum GradeValue
     Grade45 = 45,
     Grade50 = 50
 }
+

@@ -1,10 +1,6 @@
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Repositories;
-
 namespace Infrastructre.Memory;
-
-// Implementacja repozytorium Student w pamięci.
-// W konstruktorze dodawane są przykładowe obiekty, aby umożliwić testowanie.
 public class InMemoryStudentRepository : MemoryGenericRepository<Student>, IStudentRepository
 {
     public InMemoryStudentRepository()
@@ -31,27 +27,23 @@ public class InMemoryStudentRepository : MemoryGenericRepository<Student>, IStud
             Status = StudentStatus.Active,
             Grades = new List<Grade>()
         };
-
         AddAsync(adam).Wait();
         AddAsync(ewa).Wait();
     }
-
     public IEnumerable<Student> GetStudentsByStudyYear(int studyYear)
     {
         return _data.Values.Where(s => s.YearOfStudy == studyYear).ToList();
     }
-
     public IEnumerable<Student> GetStudentsByProgram(Guid programId)
     {
         return _data.Values.Where(s => s.DegreeProgramId == programId).ToList();
     }
-
     public Task ChangeStatusAsync(Guid studentId, StudentStatus status)
     {
         if (!_data.TryGetValue(studentId, out var student))
             throw new KeyNotFoundException($"Student with id={studentId} not found.");
-
         student.Status = status;
         return Task.CompletedTask;
     }
 }
+

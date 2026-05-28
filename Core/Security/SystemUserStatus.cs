@@ -1,6 +1,4 @@
-namespace Core.Security;
-
-// Typ wyliczeniowy statusu użytkownika systemu.
+﻿namespace Core.Security;
 public enum SystemUserStatus
 {
     Active = 0,
@@ -8,3 +6,4 @@ public enum SystemUserStatus
     Locked = 2,
     PendingActivation = 3
 }
+

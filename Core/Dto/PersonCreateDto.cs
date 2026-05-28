@@ -1,6 +1,4 @@
-namespace Core.Dto;
-
-// DTO przekazywane przy tworzeniu nowej osoby (studenta lub wykładowcy).
+﻿namespace Core.Dto;
 public abstract record PersonCreateDto
 {
     public string FirstName { get; init; } = string.Empty;
@@ -8,3 +6,4 @@ public abstract record PersonCreateDto
     public string NationalId { get; init; } = string.Empty;
     public string Email { get; init; } = string.Empty;
 }
+

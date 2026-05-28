@@ -2,10 +2,7 @@ using Core.Entities;
 using Core.Repositories;
 using Infrastructre.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
-
 namespace Infrastructre.EntityFramework.Repositories;
-
-// Implementacja repozytorium Lecturer z użyciem Entity Framework Core.
 public class EfLecturerRepository(UniversityDbContext context)
     : EfGenericRepository<Lecturer>(context.Lecturers), ILecturerRepository
 {
@@ -13,7 +10,6 @@ public class EfLecturerRepository(UniversityDbContext context)
     {
         throw new NotImplementedException("Metoda do uzupełnienia w ramach pracy domowej.");
     }
-
     public IEnumerable<Lecturer> GetByTitle(string title)
     {
         return _ = context.Lecturers
@@ -21,7 +17,6 @@ public class EfLecturerRepository(UniversityDbContext context)
             .AsNoTracking()
             .ToList();
     }
-
     public IEnumerable<Lecturer> GetByFaculty(string faculty)
     {
         return _ = context.Lecturers
@@ -30,3 +25,4 @@ public class EfLecturerRepository(UniversityDbContext context)
             .ToList();
     }
 }
+

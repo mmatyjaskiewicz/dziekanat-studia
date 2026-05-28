@@ -1,6 +1,4 @@
-namespace Core.Entities;
-
-// Status studenta w dziekanacie.
+﻿namespace Core.Entities;
 public enum StudentStatus
 {
     Active = 0,
@@ -8,3 +6,4 @@ public enum StudentStatus
     Expelled = 2,
     Graduate = 3
 }
+

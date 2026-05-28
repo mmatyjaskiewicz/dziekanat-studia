@@ -1,10 +1,7 @@
-using Core.Dto;
+﻿using Core.Dto;
 using Core.Services;
 using Microsoft.AspNetCore.Mvc;
-
 namespace WebApi.Controllers;
-
-// Kontroler REST dla zasobu Student.
 [ApiController]
 [Route("/api/students")]
 public class StudentsController(IStudentService service) : ControllerBase
@@ -14,7 +11,6 @@ public class StudentsController(IStudentService service) : ControllerBase
     {
         return Ok(await service.FindAllStudentsPaged(page, size));
     }
-
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetStudent(Guid id)
     {
@@ -22,14 +18,12 @@ public class StudentsController(IStudentService service) : ControllerBase
         if (dto is null) return NotFound();
         return Ok(dto);
     }
-
     [HttpPost]
     public async Task<IActionResult> Create(StudentCreateDto dto)
     {
         var result = await service.AddStudent(dto);
         return CreatedAtAction(nameof(GetStudent), new { id = result.Id }, result);
     }
-
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, StudentUpdateDto dto)
     {
@@ -37,7 +31,6 @@ public class StudentsController(IStudentService service) : ControllerBase
         if (updated is null) return NotFound();
         return Ok(updated);
     }
-
     [HttpPost("{studentId:guid}/grades")]
     [ProducesResponseType(typeof(GradeDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,7 +42,6 @@ public class StudentsController(IStudentService service) : ControllerBase
         var note = await service.AddGrade(studentId, dto);
         return CreatedAtAction(nameof(GetGrades), new { studentId }, note);
     }
-
     [HttpGet("{studentId:guid}/grades")]
     [ProducesResponseType(typeof(IEnumerable<GradeDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -58,7 +50,6 @@ public class StudentsController(IStudentService service) : ControllerBase
         var grades = await service.GetGrades(studentId);
         return Ok(grades);
     }
-
     [HttpPut("{studentId:guid}/grades/{gradeId:guid}")]
     public async Task<IActionResult> UpdateGrade(
         [FromRoute] Guid studentId,
@@ -70,3 +61,4 @@ public class StudentsController(IStudentService service) : ControllerBase
         return Ok(updated);
     }
 }
+

@@ -1,8 +1,5 @@
-using Core.Entities;
-
+﻿using Core.Entities;
 namespace Core.Entities;
-
-// Klasa studenta - dziedziczy po klasie bazowej Person.
 public class Student : Person
 {
     public string StudentNumber { get; set; } = string.Empty;
@@ -14,3 +11,4 @@ public class Student : Person
     public StudentStatus Status { get; set; } = StudentStatus.Active;
     public List<Grade> Grades { get; set; } = new();
 }
+

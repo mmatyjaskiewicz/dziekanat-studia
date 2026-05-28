@@ -1,9 +1,6 @@
-using Core.Security;
+﻿using Core.Security;
 using Microsoft.AspNetCore.Identity;
-
 namespace Infrastructre.EntityFramework.Entities;
-
-// Klasa użytkownika systemu dziekanatu - dziedziczy po IdentityUser i implementuje ISystemUser.
 public class AppUser : IdentityUser, ISystemUser
 {
     public required string FirstName { get; set; }
@@ -15,7 +12,6 @@ public class AppUser : IdentityUser, ISystemUser
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? DeactivatedAt { get; private set; }
-
     public void Activate()
     {
         if (Status == SystemUserStatus.Inactive)
@@ -24,7 +20,6 @@ public class AppUser : IdentityUser, ISystemUser
             DeactivatedAt = null;
         }
     }
-
     public void Deactivate(DateTime now)
     {
         if (Status == SystemUserStatus.Active)
@@ -34,3 +29,4 @@ public class AppUser : IdentityUser, ISystemUser
         }
     }
 }
+

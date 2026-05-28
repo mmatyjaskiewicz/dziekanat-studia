@@ -1,9 +1,5 @@
-using System;
-
+﻿using System;
 namespace Core.Security;
-
-// Interfejs z właściwościami użytkownika systemu.
-// W module Infrastructure klasa encji użytkownika implementuje ten interfejs.
 public interface ISystemUser
 {
     string Id { get; }
@@ -15,3 +11,4 @@ public interface ISystemUser
     SystemUserStatus Status { get; }
     DateTime CreatedAt { get; }
 }
+

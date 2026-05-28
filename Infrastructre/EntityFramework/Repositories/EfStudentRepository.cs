@@ -1,11 +1,8 @@
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Repositories;
 using Infrastructre.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
-
 namespace Infrastructre.EntityFramework.Repositories;
-
-// Implementacja repozytorium Student z użyciem Entity Framework Core.
 public class EfStudentRepository(UniversityDbContext context)
     : EfGenericRepository<Student>(context.Students), IStudentRepository
 {
@@ -16,7 +13,6 @@ public class EfStudentRepository(UniversityDbContext context)
             .AsNoTracking()
             .ToList();
     }
-
     public IEnumerable<Student> GetStudentsByProgram(Guid programId)
     {
         return _ = context.Students
@@ -24,7 +20,6 @@ public class EfStudentRepository(UniversityDbContext context)
             .AsNoTracking()
             .ToList();
     }
-
     public async Task ChangeStatusAsync(Guid studentId, StudentStatus status)
     {
         var student = await context.Students.FindAsync(studentId)
@@ -32,3 +27,4 @@ public class EfStudentRepository(UniversityDbContext context)
         student.Status = status;
     }
 }
+

@@ -1,8 +1,5 @@
-using Core.Repositories;
-
+﻿using Core.Repositories;
 namespace Core.UnitOfWork;
-
-// Interfejs jednostki pracy grupujący repozytoria pochodzące z tego samego źródła danych.
 public interface IUniversityUnitOfWork : IAsyncDisposable
 {
     IStudentRepository Students { get; }
@@ -11,9 +8,9 @@ public interface IUniversityUnitOfWork : IAsyncDisposable
     ICourseRepository Courses { get; }
     IDegreeProgramRepository DegreePrograms { get; }
     IAcademicYearRepository AcademicYears { get; }
-
     Task<int> SaveChangesAsync();
     Task BeginTransactionAsync();
     Task CommitTransactionAsync();
     Task RollbackTransactionAsync();
 }
+

@@ -1,9 +1,6 @@
 using Core.Entities;
 using Core.Repositories;
-
 namespace Infrastructre.Memory;
-
-// Implementacja repozytorium Lecturer w pamięci z przykładowymi danymi.
 public class InMemoryLecturerRepository : MemoryGenericRepository<Lecturer>, ILecturerRepository
 {
     public InMemoryLecturerRepository()
@@ -26,23 +23,20 @@ public class InMemoryLecturerRepository : MemoryGenericRepository<Lecturer>, ILe
             Title = "dr hab.",
             Faculty = "Wydział Matematyki"
         };
-
         AddAsync(kowalski).Wait();
         AddAsync(nowak).Wait();
     }
-
     public Lecturer? FindByCourse(Guid courseId)
     {
         throw new NotImplementedException("Metoda do uzupełnienia w ramach pracy domowej.");
     }
-
     public IEnumerable<Lecturer> GetByTitle(string title)
     {
         throw new NotImplementedException("Metoda do uzupełnienia w ramach pracy domowej.");
     }
-
     public IEnumerable<Lecturer> GetByFaculty(string faculty)
     {
         throw new NotImplementedException("Metoda do uzupełnienia w ramach pracy domowej.");
     }
 }
+

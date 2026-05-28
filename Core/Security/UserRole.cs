@@ -1,6 +1,4 @@
-namespace Core.Security;
-
-// Role użytkowników w systemie dziekanatu.
+﻿namespace Core.Security;
 public enum UserRole
 {
     Administrator,
@@ -8,3 +6,4 @@ public enum UserRole
     Lecturer,
     Student
 }
+

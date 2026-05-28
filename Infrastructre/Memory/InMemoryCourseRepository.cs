@@ -1,9 +1,6 @@
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Repositories;
-
 namespace Infrastructre.Memory;
-
-// Implementacja repozytorium Course w pamięci - z przykładowymi danymi.
 public class InMemoryCourseRepository : MemoryGenericRepository<Course>, ICourseRepository
 {
     public InMemoryCourseRepository()
@@ -11,9 +8,9 @@ public class InMemoryCourseRepository : MemoryGenericRepository<Course>, ICourse
         var algebra = new Course { Code = "ALG1", Name = "Algebra liniowa", Ects = 5 };
         var programowanie = new Course { Code = "PRG1", Name = "Podstawy programowania", Ects = 6 };
         var bazy = new Course { Code = "BD1", Name = "Bazy danych", Ects = 4 };
-
         AddAsync(algebra).Wait();
         AddAsync(programowanie).Wait();
         AddAsync(bazy).Wait();
     }
 }
+

@@ -1,13 +1,9 @@
-using Core.Exceptions;
+﻿using Core.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-
 namespace WebApi.Middleware;
-
-// Globalny handler wyjątków - wykorzystuje IExceptionHandler.
-// Zamienia wyjątki domenowe na odpowiedzi ProblemDetails.
 public class ProblemDetailsExceptionHandler(
     ProblemDetailsFactory factory,
     ILogger<ProblemDetailsExceptionHandler> logger) : IExceptionHandler
@@ -17,7 +13,6 @@ public class ProblemDetailsExceptionHandler(
         if (exception is LecturerNotFoundException or StudentNotFoundException)
         {
             logger.Log(LogLevel.Information, $"Exception '{exception.Message}' handled!");
-
             var problem = factory.CreateProblemDetails(
                 context,
                 StatusCodes.Status400BadRequest,
@@ -29,7 +24,6 @@ public class ProblemDetailsExceptionHandler(
             await context.Response.WriteAsJsonAsync(problem, cancellationToken);
             return true;
         }
-
         if (exception is KeyNotFoundException)
         {
             var problem = factory.CreateProblemDetails(
@@ -43,7 +37,7 @@ public class ProblemDetailsExceptionHandler(
             await context.Response.WriteAsJsonAsync(problem, cancellationToken);
             return true;
         }
-
         return false;
     }
 }
+

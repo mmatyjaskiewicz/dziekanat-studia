@@ -1,9 +1,6 @@
-using Core.Common;
+﻿using Core.Common;
 using Core.Entities;
-
 namespace Core.Repositories;
-
-// Generyczny interfejs repozytorium asynchronicznego dla encji posiadających klucz typu Guid.
 public interface IGenericRepositoryAsync<T> where T : EntityBase
 {
     Task<T?> FindByIdAsync(Guid id);
@@ -13,3 +10,4 @@ public interface IGenericRepositoryAsync<T> where T : EntityBase
     Task<T> UpdateAsync(T entity);
     Task RemoveByIdAsync(Guid id);
 }
+

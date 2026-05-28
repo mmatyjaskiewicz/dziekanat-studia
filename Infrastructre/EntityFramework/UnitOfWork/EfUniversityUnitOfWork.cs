@@ -1,12 +1,9 @@
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Repositories;
 using Core.UnitOfWork;
 using Infrastructre.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
-
 namespace Infrastructre.EntityFramework.UnitOfWork;
-
-// Implementacja jednostki pracy dla Entity Framework.
 public class EfUniversityUnitOfWork(
     IStudentRepository students,
     ILecturerRepository lecturers,
@@ -22,11 +19,10 @@ public class EfUniversityUnitOfWork(
     public ICourseRepository Courses => courses;
     public IDegreeProgramRepository DegreePrograms => degreePrograms;
     public IAcademicYearRepository AcademicYears => academicYears;
-
     public ValueTask DisposeAsync() => context.DisposeAsync();
-
     public Task<int> SaveChangesAsync() => context.SaveChangesAsync();
     public async Task BeginTransactionAsync() => await context.Database.BeginTransactionAsync();
     public async Task CommitTransactionAsync() => await context.Database.CommitTransactionAsync();
     public async Task RollbackTransactionAsync() => await context.Database.RollbackTransactionAsync();
 }
+

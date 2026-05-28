@@ -1,7 +1,4 @@
-namespace Core.Entities;
-
-// Abstrakcyjna klasa bazowa dla osób (Student, Lecturer).
-// Wspólne właściwości: imię, nazwisko, email, narodowy identyfikator.
+﻿namespace Core.Entities;
 public abstract class Person : EntityBase
 {
     public string FirstName { get; set; } = string.Empty;
@@ -9,3 +6,4 @@ public abstract class Person : EntityBase
     public string Email { get; set; } = string.Empty;
     public string NationalId { get; set; } = string.Empty;
 }
+

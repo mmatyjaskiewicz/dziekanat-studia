@@ -1,6 +1,4 @@
-namespace Core.Entities;
-
-// Klasa oceny przypisanej do studenta z konkretnego kursu, w danym roku akademickim.
+﻿namespace Core.Entities;
 public class Grade : EntityBase
 {
     public Guid StudentId { get; set; }
@@ -10,3 +8,4 @@ public class Grade : EntityBase
     public DateTime IssueDate { get; set; }
     public GradeValue Value { get; set; }
 }
+

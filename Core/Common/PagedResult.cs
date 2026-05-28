@@ -1,6 +1,4 @@
-namespace Core.Common;
-
-// Kontener na porcję danych zwracanych z repozytorium.
+﻿namespace Core.Common;
 public record PagedResult<T>(
     List<T> Items,
     int TotalCount,
@@ -11,3 +9,4 @@ public record PagedResult<T>(
     public bool HasNext => Page < TotalPages;
     public bool HasPrevious => Page > 1;
 }
+

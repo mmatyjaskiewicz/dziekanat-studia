@@ -1,30 +1,25 @@
-using Core.Dto;
+﻿using Core.Dto;
 using FluentValidation;
-
 namespace Core.Validators;
-
-// Walidator dla PersonCreateDto - reguły walidacji danych osobowych wspólne dla Student/Lecturer.
 public class PersonCreateDtoValidator : AbstractValidator<PersonCreateDto>
 {
     public PersonCreateDtoValidator()
     {
         RuleFor(x => x.FirstName)
-            .NotEmpty().WithMessage("Imię jest wymagane.")
-            .MaximumLength(100).WithMessage("Imię nie może przekraczać 100 znaków.")
-            .Matches(@"^[\p{L}\s\-]+$").WithMessage("Imię zawiera niedozwolone znaki.");
-
+            .NotEmpty().WithMessage("ImiĂ„â„˘ jest wymagane.")
+            .MaximumLength(100).WithMessage("ImiĂ„â„˘ nie moĂ…ÂĽe przekraczaĂ„â€ˇ 100 znakĂÂłw.")
+            .Matches(@"^[\p{L}\s\-]+$").WithMessage("ImiĂ„â„˘ zawiera niedozwolone znaki.");
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("Nazwisko jest wymagane.")
-            .MaximumLength(200).WithMessage("Nazwisko nie może przekraczać 200 znaków.")
+            .MaximumLength(200).WithMessage("Nazwisko nie moĂ…ÂĽe przekraczaĂ„â€ˇ 200 znakĂÂłw.")
             .Matches(@"^[\p{L}\s\-]+$").WithMessage("Nazwisko zawiera niedozwolone znaki.");
-
         RuleFor(x => x.NationalId)
             .NotEmpty().WithMessage("Numer PESEL jest wymagany.")
-            .Length(11).WithMessage("Numer PESEL musi mieć 11 znaków.");
-
+            .Length(11).WithMessage("Numer PESEL musi mieĂ„â€ˇ 11 znakĂÂłw.");
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email jest wymagany.")
-            .EmailAddress().WithMessage("Nieprawidłowy format adresu email.")
+            .EmailAddress().WithMessage("NieprawidĂ…â€šowy format adresu email.")
             .MaximumLength(200);
     }
 }
+

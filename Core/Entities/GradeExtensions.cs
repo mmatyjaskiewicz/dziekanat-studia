@@ -1,15 +1,10 @@
-namespace Core.Entities;
-
-// Klasa rozszerzeń dla typu wyliczeniowego GradeValue.
-// Udostępnia konwersje na wartość liczbową, parsowanie łańcucha znaków
-// oraz mapowanie na polską nazwę oceny.
+﻿namespace Core.Entities;
 public static class GradeExtensions
 {
     public static double Value(this GradeValue gradeType)
     {
         return (int)gradeType / 10.0;
     }
-
     public static string PolishName(this GradeValue gradeType)
     {
         return gradeType switch
@@ -23,7 +18,6 @@ public static class GradeExtensions
             _ => string.Empty
         };
     }
-
     public static GradeValue Parse(string gradeString)
     {
         return gradeString switch
@@ -37,9 +31,9 @@ public static class GradeExtensions
             _ => throw new ArgumentException($"Invalid grade: {gradeString}")
         };
     }
-
     public static List<string> GradeValues()
     {
         return Enum.GetValues<GradeValue>().Select(g => g.Value().ToString("N1")).ToList();
     }
 }
+

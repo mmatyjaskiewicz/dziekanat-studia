@@ -1,8 +1,5 @@
-using Core.Entities;
-
+﻿using Core.Entities;
 namespace Core.Dto;
-
-// DTO skrótowego opisu studenta - używane np. na listach.
 public sealed record StudentSummaryDto : PersonDto
 {
     public string StudentId { get; init; } = string.Empty;
@@ -10,8 +7,6 @@ public sealed record StudentSummaryDto : PersonDto
     public int YearOfStudy { get; init; }
     public StudentStatus Status { get; init; }
 }
-
-// DTO pełnych danych studenta - zwracane np. po pobraniu po Id.
 public sealed record StudentDetailDto : PersonDto
 {
     public string StudentId { get; init; } = string.Empty;
@@ -24,8 +19,6 @@ public sealed record StudentDetailDto : PersonDto
     public int TotalEctsEarned { get; init; }
     public bool IsEligibleForDiploma { get; init; }
 }
-
-// DTO tworzenia nowego studenta.
 public sealed record StudentCreateDto : PersonCreateDto
 {
     public string StudentId { get; init; } = string.Empty;
@@ -33,11 +26,10 @@ public sealed record StudentCreateDto : PersonCreateDto
     public string ProgramCode { get; init; } = string.Empty;
     public int EnrollmentYearFrom { get; init; }
 }
-
-// DTO aktualizacji danych studenta.
 public sealed record StudentUpdateDto : PersonDto
 {
     public int YearOfStudy { get; init; }
     public StudentStatus Status { get; init; }
     public string ProgramCode { get; init; } = string.Empty;
 }
+
