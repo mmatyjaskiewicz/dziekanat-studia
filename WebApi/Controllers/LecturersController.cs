@@ -8,7 +8,7 @@ namespace WebApi.Controllers;
 [ApiController]
 [Route("/api/lecturers")]
 [Authorize(Policy = "DeanOffice")]
-public class LecturersController(ILecturerService lecturerService) : ControllerBase
+public class LecturersController(ILecturerService lecturerService, IStudentService studentService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllLecturers(int page = 1, int size = 10)
@@ -45,5 +45,12 @@ public class LecturersController(ILecturerService lecturerService) : ControllerB
     {
         var courses = await lecturerService.GetLecturerCourses(id);
         return Ok(courses);
+    }
+
+    [HttpGet("{id:guid}/students")]
+    public async Task<IActionResult> GetStudents(Guid id)
+    {
+        var students = await studentService.GetStudentsByLecturer(id);
+        return Ok(students);
     }
 }

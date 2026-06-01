@@ -1,4 +1,5 @@
 ﻿using Core.Dto;
+using Core.Entities;
 using Core.Services;
 using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
@@ -39,7 +40,8 @@ public class StudentsController(IStudentService service) : ControllerBase
         [FromRoute] Guid studentId,
         [FromBody] GradeCreateDto dto)
     {
-        var note = await service.AddGrade(studentId, dto);
+        var changedBy = User.Identity?.Name ?? "system";
+        var note = await service.AddGrade(studentId, dto, changedBy);
         return CreatedAtAction(nameof(GetGrades), new { studentId }, note);
     }
     [HttpGet("{studentId:guid}/grades")]
@@ -50,13 +52,37 @@ public class StudentsController(IStudentService service) : ControllerBase
         var grades = await service.GetGrades(studentId);
         return Ok(grades);
     }
+
+    [HttpGet("{studentId:guid}/grades/{gradeId:guid}/history")]
+    public async Task<IActionResult> GetGradeHistory([FromRoute] Guid studentId, [FromRoute] Guid gradeId)
+    {
+        var history = await service.GetGradeHistory(gradeId);
+        return Ok(history);
+    }
+
+    public record AssignProgramRequest(Guid DegreeProgramId, Guid? AcademicYearId);
+    [HttpPost("{id:guid}/assign-program")]
+    public async Task<IActionResult> AssignToProgram(Guid id, [FromBody] AssignProgramRequest request)
+    {
+        await service.AssignToProgram(id, request.DegreeProgramId, request.AcademicYearId);
+        return NoContent();
+    }
+
+    public record ChangeStatusRequest(StudentStatus Status, string Reason);
+    [HttpPost("{id:guid}/change-status")]
+    public async Task<IActionResult> ChangeStatus(Guid id, [FromBody] ChangeStatusRequest request)
+    {
+        await service.ChangeStatus(id, request.Status, request.Reason);
+        return NoContent();
+    }
     [HttpPut("{studentId:guid}/grades/{gradeId:guid}")]
     public async Task<IActionResult> UpdateGrade(
         [FromRoute] Guid studentId,
         [FromRoute] Guid gradeId,
         [FromBody] GradeUpdateDto dto)
     {
-        var updated = await service.UpdateGrade(studentId, gradeId, dto);
+        var changedBy = User.Identity?.Name ?? "system";
+        var updated = await service.UpdateGrade(studentId, gradeId, dto, changedBy);
         if (updated is null) return NotFound();
         return Ok(updated);
     }
