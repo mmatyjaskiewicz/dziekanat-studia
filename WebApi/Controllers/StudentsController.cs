@@ -1,11 +1,12 @@
 ﻿using Core.Dto;
 using Core.Entities;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
 [ApiController]
 [Route("/api/students")]
-public class StudentsController(IStudentService service) : ControllerBase
+public class StudentsController(IStudentService service, IStudentImportService importService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllStudents(int page = 1, int size = 10)
@@ -85,6 +86,19 @@ public class StudentsController(IStudentService service) : ControllerBase
         var updated = await service.UpdateGrade(studentId, gradeId, dto, changedBy);
         if (updated is null) return NotFound();
         return Ok(updated);
+    }
+
+    [HttpPost("import")]
+    [Authorize(Policy = "DeanOffice")]
+    [RequestSizeLimit(20_000_000)]
+    public async Task<IActionResult> Import(IFormFile file, CancellationToken ct)
+    {
+        if (file is null || file.Length == 0)
+            return BadRequest("File is required.");
+        var importedBy = User.Identity?.Name ?? "system";
+        await using var stream = file.OpenReadStream();
+        var report = await importService.ImportAsync(stream, file.FileName, importedBy, ct);
+        return Ok(report);
     }
 }
 

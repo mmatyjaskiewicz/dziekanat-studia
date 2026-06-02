@@ -48,6 +48,7 @@ public static class UniversityInfrastructureModule
             .AddDefaultTokenProviders();
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<ILecturerService, LecturerService>();
+        services.AddScoped<IStudentImportService, StudentImportService>();
         services.AddScoped<IDataSeeder, Infrastructre.Services.IdentityDbSeeder>();
         return services;
     }
