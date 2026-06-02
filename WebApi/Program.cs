@@ -2,9 +2,14 @@ using Core.Authorization;
 using Core.Module;
 using Core.Services;
 using FluentValidation.AspNetCore;
+using Infrastructre.EntityFramework.Context;
+using Infrastructre.EntityFramework.Entities;
+using Infrastructre.EntityFramework.Validators;
 using Infrastructre.Module;
 using Infrastructre.Security;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Middleware;
 namespace WebApi;
 public class Program
@@ -29,6 +34,13 @@ public class Program
         {
             app.MapOpenApi();
             using var scope = app.Services.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            userManager.UserValidators.Clear();
+            userManager.UserValidators.Add(new AllowDottedEmailUserValidator<AppUser>(userManager));
+            var identityDb = scope.ServiceProvider.GetRequiredService<UniversityIdentityDbContext>();
+            var universityDb = scope.ServiceProvider.GetRequiredService<UniversityDbContext>();
+            await identityDb.Database.MigrateAsync();
+            await universityDb.Database.MigrateAsync();
             var seeders = scope.ServiceProvider.GetServices<IDataSeeder>().OrderBy(s => s.Order);
             foreach (var seeder in seeders)
                 await seeder.SeedAsync();

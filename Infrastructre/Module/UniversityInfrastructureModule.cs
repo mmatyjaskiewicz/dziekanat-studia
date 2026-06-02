@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -30,11 +31,13 @@ public static class UniversityInfrastructureModule
         services.AddScoped<IAcademicYearRepository, EfAcademicYearRepository>();
         services.AddScoped<IUniversityUnitOfWork, EfUniversityUnitOfWork>();
         services.AddDbContext<UniversityDbContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("UniversityDb")
-                ?? "Data Source=university.db"));
+            options.UseSqlite(configuration.GetConnectionString("DziekanatDb")
+                ?? "Data Source=dziekanat.db")
+                .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning)));
         services.AddDbContext<UniversityIdentityDbContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("UniversityDb")
-                ?? "Data Source=university.db"));
+            options.UseSqlite(configuration.GetConnectionString("DziekanatDb")
+                ?? "Data Source=dziekanat.db")
+                .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning)));
         services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.Password.RequiredLength = 8;

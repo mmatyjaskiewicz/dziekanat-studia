@@ -27,6 +27,11 @@ public class IdentityDbSeeder : IDataSeeder
 
     public async Task SeedAsync()
     {
+        if (_userManager.Users.Any())
+        {
+            _logger.LogInformation("Identity data already seeded — pomijam.");
+            return;
+        }
         await SeedRolesAsync();
         await SeedUsersAsync();
     }
