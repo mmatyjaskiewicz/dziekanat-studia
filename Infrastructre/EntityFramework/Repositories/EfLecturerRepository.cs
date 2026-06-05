@@ -5,6 +5,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructre.EntityFramework.Repositories;
 public class EfLecturerRepository(UniversityDbContext context) : EfGenericRepository<Lecturer>(context.Lecturers), ILecturerRepository
 {
+    public override async Task<Lecturer?> FindByIdAsync(Guid id)
+    {
+        return await context.Lecturers
+            .Include(l => l.Courses)
+            .FirstOrDefaultAsync(l => l.Id == id);
+    }
     public Lecturer? FindByCourse(Guid courseId)
     {
         throw new NotImplementedException("Metoda do uzupełnienia w ramach pracy domowej.");

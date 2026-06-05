@@ -16,10 +16,7 @@ public class AuthService : IAuthService
     private readonly UserManager<AppUser> _userManager;
     private readonly UniversityIdentityDbContext _context;
     private readonly JwtSettings _jwtOptions;
-    public AuthService(
-        UserManager<AppUser> userManager,
-        UniversityIdentityDbContext context,
-        JwtSettings jwtOptions)
+    public AuthService(UserManager<AppUser> userManager, UniversityIdentityDbContext context, JwtSettings jwtOptions)
     {
         _userManager = userManager;
         _context = context;

@@ -6,6 +6,12 @@ namespace Infrastructre.EntityFramework.Repositories;
 public class EfStudentRepository(UniversityDbContext context)
     : EfGenericRepository<Student>(context.Students), IStudentRepository
 {
+    public override async Task<Student?> FindByIdAsync(Guid id)
+    {
+        return await context.Students
+            .Include(s => s.Grades)
+            .FirstOrDefaultAsync(s => s.Id == id);
+    }
     public IEnumerable<Student> GetStudentsByStudyYear(int studyYear)
     {
         return _ = context.Students
