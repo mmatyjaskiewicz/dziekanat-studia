@@ -27,8 +27,16 @@ public class AuthService : IAuthService
     }
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
     {
-        var user = await _userManager.FindByEmailAsync(dto.Email)
-            ?? throw new Exception("Nieprawidłowy email lub hasło.");
+        Console.WriteLine($"DTO EMAIL = '{dto.Email}'");
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        Console.WriteLine(user == null
+            ? "USER NOT FOUND"
+            : $"FOUND USER: {user.Email}");
+        
+        // var user = await _userManager.FindByEmailAsync(dto.Email) ?? throw new Exception("Nieprawidłowy email lub hasło.");
+        Console.WriteLine($"EMAIL: {dto.Email}");
+        Console.WriteLine($"PASSWORD: {dto.Password}");
         if (!await _userManager.CheckPasswordAsync(user, dto.Password))
         {
             await _userManager.AccessFailedAsync(user);

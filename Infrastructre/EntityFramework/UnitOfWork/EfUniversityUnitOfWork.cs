@@ -1,16 +1,11 @@
-﻿using Core.Entities;
-using Core.Repositories;
+﻿using Core.Repositories;
 using Core.UnitOfWork;
 using Infrastructre.EntityFramework.Context;
-using Microsoft.EntityFrameworkCore;
+
 namespace Infrastructre.EntityFramework.UnitOfWork;
-public class EfUniversityUnitOfWork(
-    IStudentRepository students,
-    ILecturerRepository lecturers,
-    IGradeRepository grades,
-    ICourseRepository courses,
-    IDegreeProgramRepository degreePrograms,
-    IAcademicYearRepository academicYears,
+public class EfUniversityUnitOfWork(IStudentRepository students, ILecturerRepository lecturers, IGradeRepository grades, ICourseRepository courses, 
+    IDegreeProgramRepository degreePrograms, 
+    IAcademicYearRepository academicYears, 
     UniversityDbContext context) : IUniversityUnitOfWork
 {
     public IStudentRepository Students => students;

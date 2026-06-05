@@ -3,8 +3,7 @@ using Core.Repositories;
 using Infrastructre.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 namespace Infrastructre.EntityFramework.Repositories;
-public class EfLecturerRepository(UniversityDbContext context)
-    : EfGenericRepository<Lecturer>(context.Lecturers), ILecturerRepository
+public class EfLecturerRepository(UniversityDbContext context) : EfGenericRepository<Lecturer>(context.Lecturers), ILecturerRepository
 {
     public Lecturer? FindByCourse(Guid courseId)
     {

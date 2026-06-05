@@ -7,9 +7,7 @@ using Core.UnitOfWork;
 using Core.ValueObjects;
 using FluentValidation;
 namespace Core.Services;
-public class StudentImportService(
-    IUniversityUnitOfWork unitOfWork,
-    IValidator<StudentCreateDto> validator) : IStudentImportService
+public class StudentImportService(IUniversityUnitOfWork unitOfWork, IValidator<StudentCreateDto> validator) : IStudentImportService
 {
     public char DetectDelimiter(string sample)
     {

@@ -37,9 +37,7 @@ public class StudentsController(IStudentService service, IStudentImportService i
     [ProducesResponseType(typeof(GradeDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> AddGrade(
-        [FromRoute] Guid studentId,
-        [FromBody] GradeCreateDto dto)
+    public async Task<IActionResult> AddGrade([FromRoute] Guid studentId, [FromBody] GradeCreateDto dto)
     {
         var changedBy = User.Identity?.Name ?? "system";
         var note = await service.AddGrade(studentId, dto, changedBy);

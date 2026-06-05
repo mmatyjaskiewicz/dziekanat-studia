@@ -19,9 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Infrastructre.Module;
 public static class UniversityInfrastructureModule
 {
-    public static IServiceCollection AddUniversityEfModule(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddUniversityEfModule(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IStudentRepository, EfStudentRepository>();
         services.AddScoped<ILecturerRepository, EfLecturerRepository>();

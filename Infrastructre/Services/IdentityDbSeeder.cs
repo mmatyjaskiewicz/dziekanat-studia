@@ -15,10 +15,7 @@ public class IdentityDbSeeder : IDataSeeder
     private readonly RoleManager<AppRole> _roleManager;
     private readonly ILogger<IdentityDbSeeder> _logger;
 
-    public IdentityDbSeeder(
-        UserManager<AppUser> userManager,
-        RoleManager<AppRole> roleManager,
-        ILogger<IdentityDbSeeder> logger)
+    public IdentityDbSeeder(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, ILogger<IdentityDbSeeder> logger)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -29,7 +26,7 @@ public class IdentityDbSeeder : IDataSeeder
     {
         if (_userManager.Users.Any())
         {
-            _logger.LogInformation("Identity data already seeded — pomijam.");
+            _logger.LogInformation("Identity data already seeded.");
             return;
         }
         await SeedRolesAsync();
@@ -98,7 +95,7 @@ public class IdentityDbSeeder : IDataSeeder
     {
         if (await _userManager.FindByEmailAsync(seedUser.Email) is not null)
         {
-            _logger.LogInformation("Użytkownik {Email} już istnieje — pomijam.", seedUser.Email);
+            _logger.LogInformation("Użytkownik {Email} już istnieje.", seedUser.Email);
             return;
         }
 
@@ -138,6 +135,12 @@ public class IdentityDbSeeder : IDataSeeder
         }
 
         _logger.LogInformation("Utworzono użytkownika {Email} z rolą {Role}.", seedUser.Email, seedUser.Role);
+        var found = await _userManager.FindByEmailAsync(seedUser.Email);
+
+        Console.WriteLine(
+            found == null
+                ? "SEEDER: USER NOT FOUND"
+                : $"SEEDER: FOUND {found.Email}");
     }
 
     private static string FormatErrors(IdentityResult result) =>

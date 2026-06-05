@@ -38,7 +38,7 @@ public class UniversityIdentityDbContext : IdentityDbContext<AppUser, AppRole, s
             entity.HasIndex(t => t.Token).IsUnique();
         });
         builder.Entity<AppRole>().HasData(
-            new AppRole(UserRole.Administrator.ToString(), "Pełny dostÄ™p do systemu."),
+            new AppRole(UserRole.Administrator.ToString(), "Pełny dostęp do systemu."),
             new AppRole(UserRole.DeanOfficeWorker.ToString(), "Pracownik dziekanatu."),
             new AppRole(UserRole.Lecturer.ToString(), "Wykładowca."),
             new AppRole(UserRole.Student.ToString(), "Student.")
