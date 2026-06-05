@@ -10,6 +10,8 @@ public class EfStudentRepository(UniversityDbContext context)
     {
         return await context.Students
             .Include(s => s.Grades)
+            .Include(s => s.DegreeProgram)
+            .Include(s => s.EnrollmentYear)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
     public IEnumerable<Student> GetStudentsByStudyYear(int studyYear)
