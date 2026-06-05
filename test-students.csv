@@ -1,4 +1,0 @@
-FirstName,LastName,Email,NationalId,StudentId,YearOfStudy,ProgramCode,EnrollmentYearFrom
-Adam,Nowak,adam.import2@app.pl,00201501001,S99001,1,INF,2024
-Ewa,Kowalska,ewa.import2@app.pl,01251001015,S99002,2,INF,2023
-Piotr,Test,piotr.import2@app.pl,02230101025,S99003,3,INF,2022
