@@ -1,6 +1,6 @@
 namespace Core.Entities;
 
-public class GradeChangeHistory
+public class GradeChangeHistory : EntityBase
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid GradeId { get; set; }

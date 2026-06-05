@@ -24,6 +24,7 @@ public static class UniversityInfrastructureModule
         services.AddScoped<IStudentRepository, EfStudentRepository>();
         services.AddScoped<ILecturerRepository, EfLecturerRepository>();
         services.AddScoped<IGradeRepository, EfGradeRepository>();
+        services.AddScoped<IGradeChangeHistoryRepository, EfGradeChangeHistoryRepository>();
         services.AddScoped<ICourseRepository, EfCourseRepository>();
         services.AddScoped<IDegreeProgramRepository, EfDegreeProgramRepository>();
         services.AddScoped<IAcademicYearRepository, EfAcademicYearRepository>();

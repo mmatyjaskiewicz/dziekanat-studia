@@ -103,6 +103,20 @@ public class StudentService(IUniversityUnitOfWork unitOfWork) : IStudentService
         grade.IssueDate = dto.IssueDate;
         grade.Value = dto.GradeValue;
 
+        var history = new GradeChangeHistory
+        {
+            GradeId = grade.Id,
+            ChangedBy = changedBy,
+            ChangedAt = DateTime.UtcNow,
+            Action = "Updated",
+            OldValue = oldValue,
+            NewValue = grade.Value,
+            OldIssueDate = oldDate,
+            NewIssueDate = grade.IssueDate
+        };
+        await unitOfWork.GradeChangeHistories.AddAsync(history);
+        await unitOfWork.SaveChangesAsync();
+
         return new GradeDto
         {
             Id = grade.Id,
@@ -115,9 +129,8 @@ public class StudentService(IUniversityUnitOfWork unitOfWork) : IStudentService
     }
     public Task<IEnumerable<StudentSummaryDto>> GetStudentsByLecturer(Guid lecturerId)
     {
-        var byYear = unitOfWork.Students.GetStudentsByStudyYear(0);
-        var all = byYear.Where(s => s.Grades.Any(g => g.LecturerId == lecturerId)).ToList();
-        return Task.FromResult<IEnumerable<StudentSummaryDto>>(all.Select(s => s.ToSummary()).ToList());
+        var students = unitOfWork.Students.GetStudentsWithGradeByLecturer(lecturerId);
+        return Task.FromResult<IEnumerable<StudentSummaryDto>>(students.Select(s => s.ToSummary()).ToList());
     }
     public async Task AssignToProgram(Guid studentId, Guid degreeProgramId, Guid? academicYearId)
     {
@@ -140,8 +153,20 @@ public class StudentService(IUniversityUnitOfWork unitOfWork) : IStudentService
     {
         await ChangeStatus(studentId, status);
     }
-    public Task<IEnumerable<GradeChangeHistoryDto>> GetGradeHistory(Guid gradeId)
+    public async Task<IEnumerable<GradeChangeHistoryDto>> GetGradeHistory(Guid gradeId)
     {
-        return Task.FromResult<IEnumerable<GradeChangeHistoryDto>>(Array.Empty<GradeChangeHistoryDto>());
+        var history = await unitOfWork.GradeChangeHistories.GetByGradeIdAsync(gradeId);
+        return history.Select(h => new GradeChangeHistoryDto
+        {
+            Id = h.Id,
+            GradeId = h.GradeId,
+            ChangedBy = h.ChangedBy,
+            ChangedAt = h.ChangedAt,
+            Action = h.Action,
+            OldValue = h.OldValue,
+            NewValue = h.NewValue,
+            OldIssueDate = h.OldIssueDate,
+            NewIssueDate = h.NewIssueDate
+        }).ToList();
     }
 }

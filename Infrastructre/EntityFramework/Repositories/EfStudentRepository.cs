@@ -26,6 +26,18 @@ public class EfStudentRepository(UniversityDbContext context)
             .AsNoTracking()
             .ToList();
     }
+    public IEnumerable<Student> GetStudentsWithGradeByLecturer(Guid lecturerId)
+    {
+        var studentIds = context.Grades
+            .Where(g => g.LecturerId == lecturerId)
+            .Select(g => g.StudentId)
+            .Distinct()
+            .ToList();
+        return _ = context.Students
+            .Where(s => studentIds.Contains(s.Id))
+            .AsNoTracking()
+            .ToList();
+    }
     public async Task ChangeStatusAsync(Guid studentId, StudentStatus status)
     {
         var student = await context.Students.FindAsync(studentId)

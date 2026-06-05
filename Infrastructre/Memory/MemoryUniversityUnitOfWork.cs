@@ -5,6 +5,7 @@ public class MemoryUniversityUnitOfWork(
     IStudentRepository students,
     ILecturerRepository lecturers,
     IGradeRepository grades,
+    IGradeChangeHistoryRepository gradeChangeHistories,
     ICourseRepository courses,
     IDegreeProgramRepository degreePrograms,
     IAcademicYearRepository academicYears) : IUniversityUnitOfWork
@@ -12,6 +13,7 @@ public class MemoryUniversityUnitOfWork(
     public IStudentRepository Students => students;
     public ILecturerRepository Lecturers => lecturers;
     public IGradeRepository Grades => grades;
+    public IGradeChangeHistoryRepository GradeChangeHistories => gradeChangeHistories;
     public ICourseRepository Courses => courses;
     public IDegreeProgramRepository DegreePrograms => degreePrograms;
     public IAcademicYearRepository AcademicYears => academicYears;

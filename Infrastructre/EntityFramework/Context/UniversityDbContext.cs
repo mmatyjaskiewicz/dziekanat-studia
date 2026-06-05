@@ -7,6 +7,7 @@ public class UniversityDbContext : DbContext
     public DbSet<Lecturer> Lecturers => Set<Lecturer>();
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Grade> Grades => Set<Grade>();
+    public DbSet<GradeChangeHistory> GradeChangeHistories => Set<GradeChangeHistory>();
     public DbSet<DegreeProgram> DegreePrograms => Set<DegreeProgram>();
     public DbSet<AcademicYear> AcademicYears => Set<AcademicYear>();
     public UniversityDbContext() { }

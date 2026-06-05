@@ -3,14 +3,15 @@ using Core.UnitOfWork;
 using Infrastructre.EntityFramework.Context;
 
 namespace Infrastructre.EntityFramework.UnitOfWork;
-public class EfUniversityUnitOfWork(IStudentRepository students, ILecturerRepository lecturers, IGradeRepository grades, ICourseRepository courses, 
-    IDegreeProgramRepository degreePrograms, 
-    IAcademicYearRepository academicYears, 
+public class EfUniversityUnitOfWork(IStudentRepository students, ILecturerRepository lecturers, IGradeRepository grades, IGradeChangeHistoryRepository gradeChangeHistories, ICourseRepository courses,
+    IDegreeProgramRepository degreePrograms,
+    IAcademicYearRepository academicYears,
     UniversityDbContext context) : IUniversityUnitOfWork
 {
     public IStudentRepository Students => students;
     public ILecturerRepository Lecturers => lecturers;
     public IGradeRepository Grades => grades;
+    public IGradeChangeHistoryRepository GradeChangeHistories => gradeChangeHistories;
     public ICourseRepository Courses => courses;
     public IDegreeProgramRepository DegreePrograms => degreePrograms;
     public IAcademicYearRepository AcademicYears => academicYears;

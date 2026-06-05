@@ -38,6 +38,12 @@ public class InMemoryStudentRepository : MemoryGenericRepository<Student>, IStud
     {
         return _data.Values.Where(s => s.DegreeProgramId == programId).ToList();
     }
+    public IEnumerable<Student> GetStudentsWithGradeByLecturer(Guid lecturerId)
+    {
+        return _data.Values
+            .Where(s => s.Grades.Any(g => g.LecturerId == lecturerId))
+            .ToList();
+    }
     public Task ChangeStatusAsync(Guid studentId, StudentStatus status)
     {
         if (!_data.TryGetValue(studentId, out var student))
