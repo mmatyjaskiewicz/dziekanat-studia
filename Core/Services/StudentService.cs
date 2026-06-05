@@ -93,8 +93,8 @@ public class StudentService(IUniversityUnitOfWork unitOfWork) : IStudentService
     }
     public async Task<GradeDto?> UpdateGrade(Guid studentId, Guid gradeId, GradeUpdateDto dto, string changedBy)
     {
-        var student = await unitOfWork.Students.FindByIdAsync(studentId)
-            ?? throw new StudentNotFoundException($"Student with id={studentId} not found!");
+        var student = await unitOfWork.Students.FindByIdAsync(studentId) ?? throw new StudentNotFoundException($"Student with id={studentId} not found!");
+        Console.WriteLine(student.Grades.Count);
         var grade = student.Grades.FirstOrDefault(g => g.Id == gradeId);
         if (grade is null) return null;
 
@@ -123,7 +123,14 @@ public class StudentService(IUniversityUnitOfWork unitOfWork) : IStudentService
     {
         var student = await unitOfWork.Students.FindByIdAsync(studentId)
             ?? throw new StudentNotFoundException($"Student with id={studentId} not found!");
-        student.DegreeProgramId = degreeProgramId;
+        var program = await unitOfWork.DegreePrograms.FindByIdAsync(degreeProgramId)
+            ?? throw new DegreeProgramNotFoundException($"Degree program with id={degreeProgramId} not found!");
+        if (academicYearId is not null)
+        {
+            var year = await unitOfWork.AcademicYears.FindByIdAsync(academicYearId.Value)
+                ?? throw new DegreeProgramNotFoundException($"Academic year with id={academicYearId} not found!");
+        }
+        student.DegreeProgramId = program.Id;
         if (academicYearId is not null)
             student.EnrollmentYearId = academicYearId;
         await unitOfWork.Students.UpdateAsync(student);

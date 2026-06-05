@@ -2,8 +2,7 @@
 using Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 namespace Infrastructre.EntityFramework.Repositories;
-public class EfGenericRepository<T>(DbSet<T> set) : IGenericRepositoryAsync<T>
-    where T : EntityBase
+public class EfGenericRepository<T>(DbSet<T> set) : IGenericRepositoryAsync<T> where T : EntityBase
 {
     public async Task<T?> FindByIdAsync(Guid id)
     {

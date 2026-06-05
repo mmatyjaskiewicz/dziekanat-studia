@@ -10,7 +10,7 @@ public class ProblemDetailsExceptionHandler(
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
-        if (exception is LecturerNotFoundException or StudentNotFoundException)
+        if (exception is LecturerNotFoundException or StudentNotFoundException or DegreeProgramNotFoundException)
         {
             logger.Log(LogLevel.Information, $"Exception '{exception.Message}' handled!");
             var problem = factory.CreateProblemDetails(

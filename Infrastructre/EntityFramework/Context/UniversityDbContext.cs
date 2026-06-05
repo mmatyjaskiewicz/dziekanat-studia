@@ -11,13 +11,6 @@ public class UniversityDbContext : DbContext
     public DbSet<AcademicYear> AcademicYears => Set<AcademicYear>();
     public UniversityDbContext() { }
     public UniversityDbContext(DbContextOptions<UniversityDbContext> options) : base(options) { }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlite("Data Source=university.db");
-        }
-    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -15,8 +15,17 @@ public class AuthController(IAuthService authService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
-        var response = await authService.LoginAsync(dto);
-        return Ok(response);
+        try
+        {
+            var response = await authService.LoginAsync(dto);
+            return Ok(response);
+        }
+        catch (Exception ex) when (ex.Message.Contains("Nieprawidłowy")
+                                    || ex.Message.Contains("zablokowane")
+                                    || ex.Message.Contains("nieaktywne"))
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
     [HttpPost("refresh")]
     [AllowAnonymous]

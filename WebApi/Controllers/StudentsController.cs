@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
 [ApiController]
 [Route("/api/students")]
+[Authorize(Policy = "DeanOffice")]
 public class StudentsController(IStudentService service, IStudentImportService importService) : ControllerBase
 {
     [HttpGet]
@@ -75,10 +76,7 @@ public class StudentsController(IStudentService service, IStudentImportService i
         return NoContent();
     }
     [HttpPut("{studentId:guid}/grades/{gradeId:guid}")]
-    public async Task<IActionResult> UpdateGrade(
-        [FromRoute] Guid studentId,
-        [FromRoute] Guid gradeId,
-        [FromBody] GradeUpdateDto dto)
+    public async Task<IActionResult> UpdateGrade([FromRoute] Guid studentId, [FromRoute] Guid gradeId, [FromBody] GradeUpdateDto dto)
     {
         var changedBy = User.Identity?.Name ?? "system";
         var updated = await service.UpdateGrade(studentId, gradeId, dto, changedBy);

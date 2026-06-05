@@ -9,13 +9,6 @@ public class UniversityIdentityDbContext : IdentityDbContext<AppUser, AppRole, s
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public UniversityIdentityDbContext() { }
     public UniversityIdentityDbContext(DbContextOptions<UniversityIdentityDbContext> options) : base(options) { }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlite("Data Source=university.db");
-        }
-    }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

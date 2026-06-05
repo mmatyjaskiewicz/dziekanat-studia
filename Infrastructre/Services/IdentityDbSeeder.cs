@@ -24,12 +24,8 @@ public class IdentityDbSeeder : IDataSeeder
 
     public async Task SeedAsync()
     {
-        if (_userManager.Users.Any())
-        {
-            _logger.LogInformation("Identity data already seeded.");
-            return;
-        }
-        await SeedRolesAsync();
+        if (!_userManager.Users.Any())
+            await SeedRolesAsync();
         await SeedUsersAsync();
     }
 
@@ -88,7 +84,45 @@ public class IdentityDbSeeder : IDataSeeder
         };
 
         foreach (var seedUser in users)
-            await CreateUserAsync(seedUser);
+        {
+            var existing = await _userManager.FindByEmailAsync(seedUser.Email);
+            if (existing is null)
+            {
+                var byName = await _userManager.FindByNameAsync(seedUser.Email);
+                if (byName is not null)
+                {
+                    byName.Email = seedUser.Email;
+                    byName.NormalizedEmail = seedUser.Email.ToUpperInvariant();
+                    existing = byName;
+                }
+            }
+            if (existing is not null && string.IsNullOrEmpty(existing.NormalizedEmail))
+            {
+                existing.NormalizedEmail = seedUser.Email.ToUpperInvariant();
+            }
+            if (existing is null)
+            {
+                await CreateUserAsync(seedUser);
+            }
+            else
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(existing);
+                var resetResult = await _userManager.ResetPasswordAsync(existing, token, seedUser.Password);
+                if (!resetResult.Succeeded)
+                {
+                    _logger.LogError("Błąd resetu hasła {Email}: {Errors}",
+                        seedUser.Email, FormatErrors(resetResult));
+                    continue;
+                }
+                existing.NormalizedEmail = seedUser.Email.ToUpperInvariant();
+                await _userManager.UpdateAsync(existing);
+                if (!await _userManager.IsInRoleAsync(existing, seedUser.Role.ToString()))
+                {
+                    await _userManager.AddToRoleAsync(existing, seedUser.Role.ToString());
+                }
+                _logger.LogInformation("Zresetowano hasło i potwierdzono rolę dla {Email}.", seedUser.Email);
+            }
+        }
     }
 
     private async Task CreateUserAsync(SeedUser seedUser)
@@ -102,8 +136,6 @@ public class IdentityDbSeeder : IDataSeeder
         var user = new AppUser
         {
             Id = seedUser.Id,
-            UserName = seedUser.Email,
-            NormalizedEmail = seedUser.Email.ToUpper(),
             Email = seedUser.Email,
             FullName = $"{seedUser.FirstName} {seedUser.LastName}",
             EmailConfirmed = true,
@@ -117,13 +149,16 @@ public class IdentityDbSeeder : IDataSeeder
             Department = seedUser.Department,
             Status = SystemUserStatus.Active,
         };
-
         user.Activate();
+
+        await _userManager.SetUserNameAsync(user, seedUser.Email);
+        await _userManager.SetEmailAsync(user, seedUser.Email);
+        await _userManager.UpdateNormalizedEmailAsync(user);
 
         var createResult = await _userManager.CreateAsync(user, seedUser.Password);
         if (!createResult.Succeeded)
         {
-            _logger.LogError("Błąd tworzenia użytkownika {Email}: {Errors}", user.Email, createResult);
+            _logger.LogError("Błąd tworzenia użytkownika {Email}: {Errors}", seedUser.Email, FormatErrors(createResult));
             return;
         }
 
@@ -135,12 +170,6 @@ public class IdentityDbSeeder : IDataSeeder
         }
 
         _logger.LogInformation("Utworzono użytkownika {Email} z rolą {Role}.", seedUser.Email, seedUser.Role);
-        var found = await _userManager.FindByEmailAsync(seedUser.Email);
-
-        Console.WriteLine(
-            found == null
-                ? "SEEDER: USER NOT FOUND"
-                : $"SEEDER: FOUND {found.Email}");
     }
 
     private static string FormatErrors(IdentityResult result) =>

@@ -27,16 +27,9 @@ public class AuthService : IAuthService
     }
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
     {
-        Console.WriteLine($"DTO EMAIL = '{dto.Email}'");
-        var user = await _userManager.FindByEmailAsync(dto.Email);
-
-        Console.WriteLine(user == null
-            ? "USER NOT FOUND"
-            : $"FOUND USER: {user.Email}");
-        
-        // var user = await _userManager.FindByEmailAsync(dto.Email) ?? throw new Exception("Nieprawidłowy email lub hasło.");
-        Console.WriteLine($"EMAIL: {dto.Email}");
-        Console.WriteLine($"PASSWORD: {dto.Password}");
+        var user = _userManager.Users
+                       .FirstOrDefault(u => u.Email == dto.Email)
+                   ?? throw new Exception("Nieprawidłowy email lub hasło.");
         if (!await _userManager.CheckPasswordAsync(user, dto.Password))
         {
             await _userManager.AccessFailedAsync(user);
@@ -47,7 +40,6 @@ public class AuthService : IAuthService
         if (await _userManager.IsLockedOutAsync(user))
             throw new Exception("Konto jest zablokowane.");
         await _userManager.ResetAccessFailedCountAsync(user);
-        await _userManager.UpdateAsync(user);
         return await GenerateAuthResponseAsync(user);
     }
     public async Task<AuthResponseDto> RefreshTokenAsync(RefreshTokenDto dto)
@@ -81,9 +73,13 @@ public class AuthService : IAuthService
     }
     private async Task<AuthResponseDto> GenerateAuthResponseAsync(AppUser user)
     {
+        Console.WriteLine("STEP 1");
         var roles = await _userManager.GetRolesAsync(user);
+        Console.WriteLine("STEP 2");
         var accessToken = GenerateAccessToken(user, roles);
+        Console.WriteLine("STEP 3");
         var refreshToken = await GenerateRefreshTokenAsync(user.Id);
+        Console.WriteLine("STEP 4");
         return new AuthResponseDto
         {
             AccessToken = accessToken,
