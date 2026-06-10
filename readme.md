@@ -1,60 +1,31 @@
-## Autor
+# Student Management API
 
-Maksym Matyjaśkiewicz 15615 - lab2
+A university management system developed as a semester-long academic project. The application was built both during classes and independently outside of class to practice backend development, software architecture and database design.
 
-## Zrealizowane funkcjonalności
+## Features
 
-### Uwierzytelnianie i autoryzacja
+- JWT Authentication and Refresh Tokens
+- Role-Based Authorization
+- Student Management
+- Lecturer Management
+- Course Assignment
+- Grade Management with Change History
+- CSV and JSON Data Import
+- Input Validation
+- Pagination Support
+- PESEL Validation
 
-- logowanie użytkowników przy użyciu JWT
-- odświeżanie tokenów (Refresh Token)
-- wylogowanie użytkownika
-- pobieranie danych aktualnie zalogowanego użytkownika
-- autoryzacja oparta o role i polityki
+## Architecture & Patterns
 
-### Zarządzanie studentami
-
-- tworzenie studentów
-- edycja danych studentów
-- pobieranie listy studentów
-- pobieranie szczegółów studenta
-- zmiana statusu studenta
-- przypisywanie studenta do programu studiów
-- przypisywanie studenta do roku akademickiego
-- paginacja wyników
-
-### Zarządzanie wykładowcami
-
-- tworzenie wykładowców
-- edycja danych wykładowców
-- pobieranie listy wykładowców
-- pobieranie szczegółów wykładowcy
-- pobieranie kursów prowadzonych przez wykładowcę
-- pobieranie studentów przypisanych do wykładowcy
-
-### Zarządzanie ocenami
-
-- dodawanie ocen studentom
-- pobieranie ocen studenta
-- edycja ocen
-- zapisywanie historii zmian ocen
-- pobieranie historii zmian ocen
-
-### Import danych
-
-- import studentów z plików CSV
-- import studentów z plików JSON
-- walidacja importowanych danych
-- raportowanie błędów importu
-
-### Dodatkowe funkcjonalności
-
-- walidacja numeru PESEL
 - Repository Pattern
-- Unit Of Work Pattern
+- Unit of Work Pattern
+- Layered Architecture
+- Custom Middleware
+- DTO Mapping
 
-## Wykorzystane technologie
+## Technology Stack
 
+- C#
 - .NET
 - ASP.NET Core Web API
 - Entity Framework Core
@@ -62,28 +33,10 @@ Maksym Matyjaśkiewicz 15615 - lab2
 - ASP.NET Identity
 - JWT Authentication
 
-## Uruchomienie projektu
+## Learning Outcomes
 
-1. Sklonowanie repozytorium
+This project provided hands-on experience with REST API development, authentication and authorization, database design, validation, software architecture patterns and backend application development in ASP.NET Core.
 
-git clone https://github.com/mmatyjaskiewicz/dziekanat-studia
+## Additional Notes
 
-2. Przywrócenie pakietów
-
-dotnet restore
-
-3. Utworzenie lub aktualizacja bazy danych
-
-dotnet ef database update
-
-4. Uruchomienie aplikacji
-
-dotnet run
-
-## Repozytorium GitHub
-
-https://github.com/mmatyjaskiewicz/dziekanat-studia
-
-## Dodatkowe informacje
-
-Jako iż nie było mnie na wszystkich zajęciach zaimplementowałem 3 zadania zamiast 1, pozdrawiam.
+This project isn't fully polished yet. But im working on it.
